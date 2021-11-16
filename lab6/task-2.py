@@ -13,44 +13,31 @@ task-2.py
 
 (c) Хасанов Ислам, КЭ-101
 """
-from os import listdir
-
-
-def get_txt_files_from_current_dir():
-    return [file for file in listdir(path='.') if file.endswith('.txt')]
-
-
-def find_input_data(files):
-    if "input.txt" in files:
-        with open(r"input.txt", 'r') as input_file:
-            return input_file.readline()
-    else:
-        return None
-
-
-def multiply_elements(elements):
-    multi = 1
-    for element in elements:
-        multi *= element
-    return multi
+from toolkit import get_txt_files_from_current_dir, find_input_data, write_to_output, multiply_elements
 
 
 def get_formatted_output(number):
+    """
+    Formats the number according to the task.
+
+    :param number: string
+    :return: formatted string
+    """
     digits = list(map(int, [i for i in number]))
     sum_of_digits = sum(digits)
     multi_of_digits = multiply_elements(digits)
     return f"Число: {number}\n" \
            f"Количество цифр: {len(number)}\n" \
            f"Сумма цифр: {sum_of_digits}\n" \
-           f"Произведение цифр: {multi_of_digits}\n"
+           f"Произведение цифр: {multi_of_digits}"
 
 
 if __name__ == "__main__":
     text_files = get_txt_files_from_current_dir()
-    input_data = find_input_data(text_files).rstrip()
+    input_data = find_input_data(text_files).strip()
+
     if input_data.isdigit():
         output = get_formatted_output(input_data)
-        with open(r"output.txt", 'w') as output_file:
-            output_file.write(output)
+        write_to_output(output)
     else:
         print("Файл с входными данными не обнаружен")
