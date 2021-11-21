@@ -1,6 +1,9 @@
 """
 Набор функций, необходимых для программ шестой лабораторной работы.
 
+P.S.: Если честно, концепция свалки функций под названием 'toolkit' мне
+не особо нравится, но и плодить модули для каждой задачи тоже не хочется.
+
 (c) Хасанов Ислам, КЭ-101
 """
 from os import listdir
@@ -9,13 +12,54 @@ from time import time, strftime, localtime
 from contextlib import contextmanager
 
 
+def PrintRectangle(a, b, file):
+    """
+    Prints a rectangle of characters '*'
+    with sides a and b to the file.
+
+    :param int a: Width of rectangle.
+    :param int b: High of rectangle.
+    :param string file: Path to output.
+    :return None:
+    """
+    if a > 0 and b > 0:
+        rectangle = a * '* ' + '\n'
+        for _ in range(b - 2):
+            rectangle += f"*{(a*2-3)*' '}*\n"
+        rectangle += a * '* '
+    else:
+        rectangle = '**\n**'
+    with open(file, 'w') as output:
+        output.write(rectangle)
+
+
+def PrintSquare(a, file):
+    """
+    Prints a square of
+    characters * with side a to the file.
+
+    :param int a: Side of square.
+    :param string file: Path to output.
+    :return None:
+    """
+    if a > 0:
+        square = a * '* ' + '\n'
+        for _ in range(a-2):
+            square += f"*{(a*2-3)*' '}*\n"
+        square += a * '* '
+    else:
+        square = '**\n**'
+    with open(file, 'w') as output:
+        output.write(square)
+
+
 @contextmanager
 def stopwatch(output=None):
     """
     Outputs the date and execution time of the program.
 
-    :param output: The path to the output file.
-                    If not specified, it outputs to the stdout.
+    :param string output: The path to the output file.
+            If not specified, it outputs to the stdout.
     """
     try:
         date = strftime("%d.%m.%Y %H:%M", localtime())
@@ -42,17 +86,17 @@ def get_points(x, y, radius):
     Searches and counts points with integer
     coordinates inside a circle.
 
-    :param x: The abscissa of the circle center (float)
-    :param y: The ordinate of the circle center (float)
-    :param radius: Radius of the circle (float)
-    :return count: The number of points (int)
+    :param float x: The abscissa of the circle center.
+    :param float y: The ordinate of the circle center.
+    :param float radius: Radius of the circle.
+    :return int count: The number of points.
     """
-    borders = {'left': ceil(x - radius), 'top': floor(y + radius),
-               'right': floor(x + radius), 'bottom': ceil(y - radius)}
+    shape = {'left': ceil(x - radius), 'top': floor(y + radius),
+             'right': floor(x + radius), 'bottom': ceil(y - radius)}
 
     count = 0
-    for x in range(borders['left'], borders['right'] + 1):
-        for y in range(borders['bottom'], borders['top'] + 1):
+    for x in range(shape['left'], shape['right'] + 1):
+        for y in range(shape['bottom'], shape['top'] + 1):
             if (x - x)**2 + (y - y)**2 <= radius**2:
                 count += 1
     return count
@@ -60,7 +104,9 @@ def get_points(x, y, radius):
 
 def get_txt_files_from_current_dir():
     """
-    :return: List of .txt files
+    Returns list of .txt files.
+
+    :return list[string]:
     """
     return [file for file in listdir(path='.') if file.endswith('.txt')]
 
@@ -69,8 +115,8 @@ def find_input_data(files):
     """
     Searches among files input.txt and returns its content.
 
-    :param files: List of .txt files
-    :return data or None: String data if input.txt contains anything
+    :param list[string] | string files: List of .txt files
+    :return data | None: String data if input.txt contains anything.
     """
     if "input.txt" in files:
         with open(r"input.txt", 'r') as input_file:
@@ -80,24 +126,25 @@ def find_input_data(files):
         return None
 
 
-def write_to_output(data, mode='w'):
+def write_to_output(data, mode='w', newline=True):
     """
     Writes input data into the output.txt.
 
-    :param mode: Give 'a' to add data without rewriting
-    :param data: String data
+    :param bool newline: Adds '\n' if it's True.
+    :param string mode: Give 'a' to add data without rewriting
+    :param string data: String data
     """
     with open(r"output.txt", mode) as output_file:
-        output_file.write(data+'\n')
+        output_file.write(data+'\n' if newline else data)
 
 
 def get_prime_numbers(upper_bound):
     """
     One of the implementations of the sieve of Eratosthenes.
-    Source: https://pythonist.ru/resheto-eratosfena/
+    Source: <https://pythonist.ru/resheto-eratosfena/>
 
-    :param upper_bound: Integer
-    :return prime_numbers: List of prime numbers
+    :param int upper_bound:
+    :return list[int] prime_numbers: List of prime numbers
     """
     sieve = set(range(2, upper_bound + 1))
     prime_numbers = []
@@ -112,8 +159,8 @@ def multiply_elements(elements):
     """
     Multiplies the elements of the iterable object.
 
-    :param elements: Iterable object with integer elements
-    :return multi: Integer
+    :param list[int] elements:
+    :return int multi:
     """
     multi = 1
     for element in elements:

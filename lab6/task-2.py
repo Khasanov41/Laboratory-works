@@ -20,8 +20,8 @@ def get_formatted_output(number):
     """
     Formats the number according to the task.
 
-    :param number: string
-    :return: formatted string
+    :param string number:
+    :return string: formatted string
     """
     digits = list(map(int, [i for i in number]))
     sum_of_digits = sum(digits)

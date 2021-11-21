@@ -1,14 +1,10 @@
 """
-rectangle-squares.py
-Import the "star-geometry" module and use it.
+task-1.py
+Prints star rectangles.
 
-Warning!
-The program only checks for the existing of the input file,
-but doesn't check the data itself.
-
-(c) Хасанов Ислам > КЭ-101
+(c) Хасанов Ислам, КЭ-101
 """
-from star_geometry import PrintSquare, PrintRectangle
+from toolkit import PrintSquare, PrintRectangle
 
 
 if __name__ == '__main__':
