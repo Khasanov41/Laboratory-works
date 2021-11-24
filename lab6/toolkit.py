@@ -81,23 +81,25 @@ def stopwatch(output=None):
                 output_file.write(str(finish)+"\n")
 
 
-def get_points(x, y, radius):
+def get_points(x_center, y_center, radius):
     """
     Searches and counts points with integer
     coordinates inside a circle.
 
-    :param float x: The abscissa of the circle center.
-    :param float y: The ordinate of the circle center.
+    :param float x_center: The abscissa of the circle center.
+    :param float y_center: The ordinate of the circle center.
     :param float radius: Radius of the circle.
     :return int count: The number of points.
     """
-    shape = {'left': ceil(x - radius), 'top': floor(y + radius),
-             'right': floor(x + radius), 'bottom': ceil(y - radius)}
+    # The area of points that need to be checked.
+    shape = {'left': ceil(x_center - radius), 'top': floor(y_center + radius),
+             'right': floor(x_center + radius), 'bottom': ceil(y_center - radius)}
 
     count = 0
     for x in range(shape['left'], shape['right'] + 1):
         for y in range(shape['bottom'], shape['top'] + 1):
-            if (x - x)**2 + (y - y)**2 <= radius**2:
+            # Checking the point with the x and y coordinates for entering the area of the circle.
+            if (x - x_center)**2 + (y - y_center)**2 <= radius**2:
                 count += 1
     return count
 
