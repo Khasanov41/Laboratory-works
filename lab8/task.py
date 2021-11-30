@@ -20,65 +20,85 @@ def check(sequence):
 
 
 def stopwatch(function, *args):
-    time_start = time()
-    output = function(*args)
-    time_stop = time() - time_start
+    times = []
+    outputs = []
+    for arg in args:
+        time_start = time()
+        outputs.append(function(arg))
+        times.append(time()-time_start)
+    return outputs, times
 
-    return output, time_stop
 
+def make_table(array):
+    """
+    Creates a table based on a two-dimensional array with string data.
+    Each row of the array is a row of the table. The first line is the title.
+    All array strings must be of the same length (they can be complemented with empty strings "").
 
-def get_formatted_output(sorted_seq, rand_seq, reversed_seq):
-    titles = ("Метод", "Отсортированная",	"Случайная", "Отсортированная в обратном порядке")
-    methods = ("Метод пузырька", "Сортировка выбором", "Быстрая сортировака", "Встроенная")
-    width = (max((len(i) for i in methods))+2, len(titles[1])+2, len(titles[2])+2, len(titles[3])+2)
-    line = "+"+(width[0]+1)*"-"+(width[1]+1)*"-"+(width[2]+1)*"-"+width[3]*"-"+"+"+'\n'
-    result = line[:]+"|"
-    for i in range(4):
-        result += titles[i].center(width[i])+"|"
-    result += "\n"+line
-    for i in range(4):
-        result += "|"+methods[i].center(width[0])+"|"
-        result += sorted_seq[i].center(width[1])+"|"
-        result += rand_seq[i].center(width[2])+"|"
-        result += reversed_seq[i].center(width[3])+"|\n"
-    result += line
-    print(result)
+    :param list | tuple array: Two-dimensional array with string data
+    :return string: String in the form of a table.
+    """
+    size = (len(array), len(array[0]))
+    # Getting the maximum width of each column.
+    width = [0 for _ in range(len(array[0]))]
+    for col in range(size[1]):
+        for row in range(size[0]):
+            width[col] = max(width[col], len(array[row][col])+2)
+    # Header separator.
+    sep = '+'+'-'*(sum(width)+len(width)-1)+'+\n'
+
+    # Adds a table header.
+    table = sep
+    for col in range(size[1]):
+        table += "|"+array[0][col].center(width[col])
+    else:
+        table += "|\n"+sep
+
+    # Adds the body of the table.
+    for row in range(1, size[0]):
+        for col in range(size[1]):
+            table += "|"+array[row][col].center(width[col])
+        table += "|\n"
+    else:
+        table += sep
+
+    return table
 
 
 if __name__ == "__main__":
-    sequence_length = input("Введите число N: ")
+    seq_len = input("Введите число N: ")
 
-    if not sequence_length.isdigit():
-        raise TypeError("Please enter an integer.")
+    if not seq_len.isdigit():
+        raise TypeError("Пожалуйста, вводите целое число.")
     else:
-        sequence_length = int(sequence_length)
+        seq_len = int(seq_len)
 
-    sorted_sequence = gen_sorted_sequence(sequence_length)
-    assert check(sorted_sequence)
+    sort_seq = gen_sorted_sequence(seq_len)
+    assert check(sort_seq)
 
-    reversed_sequence = list(reversed(sorted_sequence))
-    assert not check(reversed_sequence)
+    rev_seq = list(reversed(sort_seq))
+    assert not check(rev_seq)
 
-    rand_sequence = gen_rand_sequence(sequence_length)
+    rand_seq = gen_rand_sequence(seq_len)
 
-    method1 = (stopwatch(bubble_sort, sorted_sequence),
-               stopwatch(bubble_sort, rand_sequence),
-               stopwatch(bubble_sort, reversed_sequence),)
+    method1 = (stopwatch(bubble_sort, sort_seq),
+               stopwatch(bubble_sort, rand_seq),
+               stopwatch(bubble_sort, rev_seq),)
     assert check(method1[0][0]) and check(method1[1][0]) and check(method1[2][0])
 
-    method2 = (stopwatch(selection_sort, sorted_sequence),
-               stopwatch(selection_sort, rand_sequence),
-               stopwatch(selection_sort, reversed_sequence),)
+    method2 = (stopwatch(selection_sort, sort_seq),
+               stopwatch(selection_sort, rand_seq),
+               stopwatch(selection_sort, rev_seq),)
     assert check(method2[0][0]) and check(method2[1][0]) and check(method2[2][0])
 
-    method3 = (stopwatch(quick_sort, reversed_sequence),
-               stopwatch(quick_sort, rand_sequence),
-               stopwatch(quick_sort, reversed_sequence),)
+    method3 = (stopwatch(quick_sort, rev_seq),
+               stopwatch(quick_sort, rand_seq),
+               stopwatch(quick_sort, rev_seq),)
     assert check(method3[0][0]) and check(method3[1][0]) and check(method3[2][0])
 
-    method4 = (stopwatch(sorted, sorted_sequence),
-               stopwatch(sorted, rand_sequence),
-               stopwatch(sorted, reversed_sequence),)
+    method4 = (stopwatch(sorted, sort_seq),
+               stopwatch(sorted, rand_seq),
+               stopwatch(sorted, rev_seq),)
     assert check(method4[0][0]) and check(method4[1][0]) and check(method4[2][0])
 
     sorted_sequence_time = (f"{method1[0][1]:.2f}", f"{method2[0][1]:.2f}", f"{method3[0][1]:.2f}",
