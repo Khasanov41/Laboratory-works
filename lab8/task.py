@@ -1,11 +1,10 @@
 from random import randint
-from time import time
 
 from sorts import *
 
 
 def gen_rand_sequence(length):
-    return [randint(0, 99999) for _ in range(length)]
+    return [randint(0, 9999) for _ in range(length)]
 
 
 def gen_sorted_sequence(stop, start=0, step=1):
@@ -17,16 +16,6 @@ def check(sequence):
         if sequence[i-1] > sequence[i]:
             return False
     return True
-
-
-def stopwatch(function, *args):
-    times = []
-    outputs = []
-    for arg in args:
-        time_start = time()
-        outputs.append(function(arg))
-        times.append(time()-time_start)
-    return outputs, times
 
 
 def make_table(array):
@@ -65,6 +54,11 @@ def make_table(array):
     return table
 
 
+def write_out(name, d):
+    with open(name, "w") as file:
+        file.write(d)
+
+
 if __name__ == "__main__":
     seq_len = input("Введите число N: ")
 
@@ -72,40 +66,32 @@ if __name__ == "__main__":
         raise TypeError("Пожалуйста, вводите целое число.")
     else:
         seq_len = int(seq_len)
+    print("Ведётся расчёт данных. Пожалуйста, подождите...")
 
     sort_seq = gen_sorted_sequence(seq_len)
-    assert check(sort_seq)
-
+    # assert check(sort_seq)
     rev_seq = list(reversed(sort_seq))
-    assert not check(rev_seq)
-
+    # assert not check(rev_seq)
     rand_seq = gen_rand_sequence(seq_len)
+    method0 = bubble_sort(sort_seq, rand_seq, rev_seq)
+    # assert check(method0[0][0]) and check(method0[0][1]) and check(method0[0][2])
+    method1 = selection_sort(sort_seq, rand_seq, rev_seq)
+    # assert check(method1[0][0]) and check(method1[0][1]) and check(method1[0][2])
+    method2 = nr_quick_sort(sort_seq, rand_seq, rev_seq)
+    # assert check(method2[0][0]) and check(method2[0][1]) and check(method2[0][2])
+    method3 = stand_sort(sort_seq, rand_seq, rev_seq)
+    # assert check(method3[0][0]) and check(method3[0][1]) and check(method3[0][2])
 
-    method1 = (stopwatch(bubble_sort, sort_seq),
-               stopwatch(bubble_sort, rand_seq),
-               stopwatch(bubble_sort, rev_seq),)
-    assert check(method1[0][0]) and check(method1[1][0]) and check(method1[2][0])
+    data = [("Метод", "Отсортированная", "Случайная", "Отсортированная в обратном порядке")]
+    methods_name = ["Метод пузырька", "Сортировка выбором", "Быстрая сортировка", "Встроенная"]
+    count = 0
+    for method in method0, method1, method2, method3:
+        line = [methods_name[count]]
+        for t in method[1]:
+            line.append(str(f"{t:.3f}"))
+        data.append(line)
+        count += 1
 
-    method2 = (stopwatch(selection_sort, sort_seq),
-               stopwatch(selection_sort, rand_seq),
-               stopwatch(selection_sort, rev_seq),)
-    assert check(method2[0][0]) and check(method2[1][0]) and check(method2[2][0])
-
-    method3 = (stopwatch(quick_sort, rev_seq),
-               stopwatch(quick_sort, rand_seq),
-               stopwatch(quick_sort, rev_seq),)
-    assert check(method3[0][0]) and check(method3[1][0]) and check(method3[2][0])
-
-    method4 = (stopwatch(sorted, sort_seq),
-               stopwatch(sorted, rand_seq),
-               stopwatch(sorted, rev_seq),)
-    assert check(method4[0][0]) and check(method4[1][0]) and check(method4[2][0])
-
-    sorted_sequence_time = (f"{method1[0][1]:.2f}", f"{method2[0][1]:.2f}", f"{method3[0][1]:.2f}",
-                            f"{method4[0][1]:.2f}")
-    rand_sequence_time = (f"{method1[1][1]:.2f}", f"{method2[1][1]:.2f}", f"{method3[1][1]:.2f}",
-                          f"{method4[1][1]:.2f}")
-    reversed_sequence_time = (f"{method1[0][1]:.2f}", f"{method2[0][1]:.2f}", f"{method3[0][1]:.2f}",
-                              f"{method4[0][1]:.2f}")
-
-    print(method1[2][1])
+    out = make_table(data)
+    write_out("output.txt", out)
+    print("Готово! Результат записан в output.txt.")
