@@ -1,3 +1,6 @@
+"""
+Задача 3: Нахождение наибольшего общего делителя
+"""
 from core import write_out, get_input
 
 

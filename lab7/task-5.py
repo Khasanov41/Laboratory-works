@@ -1,4 +1,7 @@
-from core import write_out, read_input
+"""
+Задача 4: Вычисление биномиальных коэффициентов
+"""
+from core import read_input
 
 
 def digits(string, number=0):

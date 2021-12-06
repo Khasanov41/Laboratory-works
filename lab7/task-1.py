@@ -1,3 +1,6 @@
+"""
+Задача 1: Вычисление значений полинома Лежандра
+"""
 from functools import lru_cache
 
 
@@ -15,8 +18,8 @@ def P(n, x):
 
 
 if __name__ == "__main__":
-	n, x = get_input("Enter n and x: ")
-	n, x = int(n), float(x)
-	results = [P(i, x) for i in range(n + 1)]
-	out = " ".join(map(str, results))
-	write_out(out)
+    n, x = get_input("Enter n and x: ")
+    n, x = int(n), float(x)
+    results = [P(i, x) for i in range(n + 1)]
+    out = " ".join(map(str, results))
+    write_out(out)

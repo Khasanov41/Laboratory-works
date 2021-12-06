@@ -1,3 +1,6 @@
+"""
+Задача 2: Вычисление целой части от деления
+"""
 from core import write_out, get_input
 
 
