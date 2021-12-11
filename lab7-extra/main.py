@@ -1,4 +1,4 @@
-from core import read_input
+from core import read_input, find_next_move
 
 
 if __name__ == "__main__":
@@ -10,4 +10,5 @@ if __name__ == "__main__":
     sides, x_y = inp[0:2], inp[2:4]
 
     board = [[0] * x_y[0]] * x_y[1]
+    moves = ((-2, -1), (-1, -2), (1, -2), (2, -1), (-2, 1), (-1, 2), (1, 2), (2, 1))
 
