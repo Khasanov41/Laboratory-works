@@ -2,6 +2,8 @@
 /.idea
 /**/__pycache__/**
 **/**/*.pyc
+**/**/*.txt
+**/**/*.zip
 #*.pyc
 #/**/*.iml
 #*.iml
