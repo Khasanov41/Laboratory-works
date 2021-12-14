@@ -1,4 +1,20 @@
+"""
+main.py
+Вычисляет возведение числа в степень.
+
+Ввод (STDIN):
+    a - целое число, основание степени;
+    b - целое числе, степень.
+Вывод (STDOUT):
+    a ** b = c, где c - это a возведённое в степень b.
+
+Примечание: Чтобы протестировать функцию Power, запустите power.py.
+
+(c) Хасанов Ислам (КЭ-101)
+"""
+
 from power import Power
+
 
 if __name__ == "__main__":
     text = "Calculating the power of a number"
@@ -13,4 +29,4 @@ if __name__ == "__main__":
         deg = input("Please enter an integer: ")
     else:
         deg = int(deg)
-    print(f"\n{'-' * len(text)}\n{base} ^ {deg} = {Power(base, deg)}")
+    print(f"\n{'-' * len(text)}\n{base} ** {deg} = {Power(base, deg)}")
