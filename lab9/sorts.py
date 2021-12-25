@@ -10,13 +10,13 @@ def minimal(arg):
     :param list arg: List of lists.
     :return: The minimum of the first items in the lists.
     """
-    while any(arg):  # while there are non-empty lists.
-        arg = [i for i in arg if i]  # Exclude empty lists.
+    while arg:  # != []
         mi, arr = arg[0][0], arg[0]
         for i in arg:  # Finding minimum from first items in the lists.
             if i[0] < mi:
                 arr, mi = i, i[0]
         yield arr.pop(0)
+        arg = [i for i in arg if i]  # Exclude empty lists.
 
 
 def test_minimal(arg):
@@ -32,7 +32,7 @@ def test_minimal(arg):
 
 def insert_sort(arr):
     """
-    Simple insertion sort. This way modify the original list.
+    Simple insertion sort.
     Warning: This way modifies the original list!
 
     :param list arr: Unsorted list.
@@ -47,10 +47,12 @@ def insert_sort(arr):
 
 def test_insert_sort(arg):
     reference = sorted(arg)
-    insert_sort(arg)
-    assert reference == arg, "Insertion sort error!"
+    test = insert_sort(arg)
+    assert reference == test, f"Error in insert_sort!\nReference:{reference}\nTest:{test}"
 
 
 if __name__ == "__main__":
     test_sqc = [[124, 1493, 2844], [139, 390, 1, 111], [144, 450, 0]]
     test_minimal(test_sqc)
+    test_sqc = [4, 6, 2, 6, 2, 5, 1, 6, 11, 466, 0, 111, 88]
+    test_insert_sort(test_sqc)
